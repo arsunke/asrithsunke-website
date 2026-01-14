@@ -620,3 +620,88 @@
     animation: none !important;
   }
 }
+/* --- New: Skills grid --- */
+.skillsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+/* --- Education styling --- */
+.eduCard .projectCardInner {
+  padding: 40px;
+}
+
+.eduHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.eduMeta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.eduDegree {
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 500;
+}
+
+.eduGpa {
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(6, 182, 212, 0.12);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  color: #06b6d4;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.eduCoursework {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0 6px;
+}
+
+/* Expanded details box */
+.eduDetails {
+  margin-top: 18px;
+}
+
+.eduDetailsBox {
+  margin-top: 14px;
+  padding: 18px 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.eduDetailsTitle {
+  font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: -0.2px;
+}
+
+.eduDetailsText {
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.7;
+  font-size: 15px;
+  margin-bottom: 14px;
+}
+
+.eduDetailsLinks {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Responsive tweak */
+@media (max-width: 768px) {
+  .skillsGrid {
+    grid-template-columns: 1fr;
+  }
+}
