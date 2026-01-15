@@ -373,7 +373,7 @@ function Scene3D({ scrollProgress = 0, activeSection = "intro" }) {
   );
 }
 
-function ScrollableScene({ activeSection }) {
+export function ScrollableScene({ activeSection }) {
   const [scrollY, setScrollY] = React.useState(0);
 
   React.useEffect(() => {
@@ -437,299 +437,11 @@ function ProjectCard({ title, description, tech, link, github }) {
   );
 }
 
-// export default function Portfolio() {
-//   const [activeSection, setActiveSection] = useState("intro");
-//   const [formData, setFormData] = useState({
-//     name: "",
-//     email: "",
-//     message: ""
-//   });
-//   const [formStatus, setFormStatus] = useState("");
 
-//   useEffect(() => {
-//     const handleScroll = () => {
-//       const sections = ["intro", "software", "datascience", "contact"];
-//       const scrollPos = window.scrollY + window.innerHeight / 2;
-      
-//       for (const section of sections) {
-//         const el = document.getElementById(section);
-//         if (el) {
-//           const top = el.offsetTop;
-//           const bottom = top + el.offsetHeight;
-//           if (scrollPos >= top && scrollPos < bottom) {
-//             setActiveSection(section);
-//             break;
-//           }
-//         }
-//       }
-//     };
-
-//     window.addEventListener("scroll", handleScroll);
-//     return () => window.removeEventListener("scroll", handleScroll);
-//   }, []);
-
-//   const scrollToSection = (id) => {
-//     const el = document.getElementById(id);
-//     if (el) {
-//       el.scrollIntoView({ behavior: "smooth" });
-//     }
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setFormStatus("Sending...");
-    
-//     // Replace with your email service (EmailJS, Formspree, etc.)
-//     // For now, using mailto as fallback
-//     const mailtoLink = `mailto:your-email@example.com?subject=Portfolio Contact from ${formData.name}&body=${encodeURIComponent(formData.message)}%0D%0A%0D%0AFrom: ${formData.email}`;
-//     window.location.href = mailtoLink;
-    
-//     // Reset form
-//     setFormData({ name: "", email: "", message: "" });
-//     setTimeout(() => {
-//       setFormStatus("Message sent! I'll get back to you soon.");
-//     }, 1000);
-//   };
-
-//   const handleChange = (e) => {
-//     setFormData({
-//       ...formData,
-//       [e.target.name]: e.target.value
-//     });
-//   };
-
-//   const softwareProjects = [
-//     {
-//       title: "E-Commerce Platform",
-//       description: "Full-stack e-commerce application with user authentication, payment processing, and admin dashboard.",
-//       tech: ["React", "Node.js", "MongoDB", "Stripe"],
-//       link: "#",
-//       github: "#"
-//     },
-//     {
-//       title: "Task Management App",
-//       description: "Collaborative task management tool with real-time updates, drag-and-drop functionality, and team collaboration features.",
-//       tech: ["React", "TypeScript", "Firebase", "Material-UI"],
-//       link: "#",
-//       github: "#"
-//     },
-//     {
-//       title: "Social Media Dashboard",
-//       description: "Analytics dashboard for social media metrics with data visualization and reporting features.",
-//       tech: ["Next.js", "Python", "PostgreSQL", "Chart.js"],
-//       link: "#",
-//       github: "#"
-//     }
-//   ];
-
-//   const dataScienceProjects = [
-//     {
-//       title: "Stock Price Prediction",
-//       description: "Machine learning model to predict stock prices using LSTM neural networks and historical market data.",
-//       tech: ["Python", "TensorFlow", "Pandas", "NumPy"],
-//       link: "#",
-//       github: "#"
-//     },
-//     {
-//       title: "Customer Segmentation Analysis",
-//       description: "Clustering analysis to segment customers based on purchasing behavior using K-means and PCA.",
-//       tech: ["Python", "scikit-learn", "Matplotlib", "Seaborn"],
-//       link: "#",
-//       github: "#"
-//     },
-//     {
-//       title: "Sentiment Analysis Tool",
-//       description: "NLP model for analyzing sentiment in customer reviews using transformer models and text classification.",
-//       tech: ["Python", "Hugging Face", "NLTK", "Streamlit"],
-//       link: "#",
-//       github: "#"
-//     }
-//   ];
-
-//   return (
-//     <div className="portfolio">
-//       {/* Fixed 3D Background */}
-//       <div className="canvasContainer">
-//         <ScrollableScene activeSection={activeSection} />
-//         <div className="vignette" />
-//       </div>
-
-
-//       {/* Navigation */}
-//       <nav className="nav">
-//         <div className="navContainer">
-//           <div className="logo" onClick={() => scrollToSection("intro")}>
-//             AS
-//           </div>
-//           <div className="navLinks">
-//             <button 
-//               className={activeSection === "intro" ? "navLink active" : "navLink"}
-//               onClick={() => scrollToSection("intro")}
-//             >
-//               About
-//             </button>
-//             <button 
-//               className={activeSection === "software" ? "navLink active" : "navLink"}
-//               onClick={() => scrollToSection("software")}
-//             >
-//               Software
-//             </button>
-//             <button 
-//               className={activeSection === "datascience" ? "navLink active" : "navLink"}
-//               onClick={() => scrollToSection("datascience")}
-//             >
-//               Data Science
-//             </button>
-//             <button 
-//               className={activeSection === "contact" ? "navLink active" : "navLink"}
-//               onClick={() => scrollToSection("contact")}
-//             >
-//               Contact
-//             </button>
-//           </div>
-//         </div>
-//       </nav>
-
-//       {/* Introduction Section */}
-//       <Section id="intro" className="introSection">
-//         <div className="introContent">
-//           <h1 className="introTitle">
-//             Hi, I'm <span className="highlight">Asrith</span>
-//           </h1>
-//           <p className="introSubtitle">Software Engineer & Data Scientist</p>
-//           <p className="introText">
-//             I'm a passionate developer with expertise in building scalable web applications 
-//             and creating data-driven solutions. I love turning complex problems into simple, 
-//             beautiful, and intuitive solutions.
-//           </p>
-//           <div className="introStats">
-//             <div className="stat">
-//               <div className="statNumber">10+</div>
-//               <div className="statLabel">Projects</div>
-//             </div>
-//             <div className="stat">
-//               <div className="statNumber">5+</div>
-//               <div className="statLabel">Technologies</div>
-//             </div>
-//             <div className="stat">
-//               <div className="statNumber">2+</div>
-//               <div className="statLabel">Years Experience</div>
-//             </div>
-//           </div>
-//           <div className="introButtons">
-//             <button onClick={() => scrollToSection("software")} className="btn btnPrimary">View Projects</button>
-//             <button onClick={() => scrollToSection("contact")} className="btn btnSecondary">Get In Touch</button>
-//           </div>
-//         </div>
-//       </Section>
-
-//       {/* Software Engineering Projects */}
-//       <Section id="software" className="projectsSection">
-//         <div className="constructionWrapper">
-//           <div className="constructionOverlay">
-//             <div className="constructionTape">
-//               <div className="tapePattern"></div>
-//               <span className="tapeText">UNDER CONSTRUCTION</span>
-//               <div className="tapePattern"></div>
-//             </div>
-//             <div className="constructionContent">
-//               <h2 className="constructionTitle">Software Engineering Projects</h2>
-//               <p className="constructionSubtitle">Building scalable and efficient web applications</p>
-//               <p className="constructionMessage">More projects coming soon...</p>
-//             </div>
-//           </div>
-//           <div className="blurredContent">
-//             <h2 className="sectionTitle">Software Engineering Projects</h2>
-//             <p className="sectionSubtitle">Building scalable and efficient web applications</p>
-//             <div className="projectsGrid">
-//               {softwareProjects.map((project, i) => (
-//                 <ProjectCard key={i} {...project} />
-//               ))}
-//             </div>
-//           </div>
-//         </div>
-//       </Section>
-
-//       {/* Data Science Projects */}
-//       <Section id="datascience" className="projectsSection">
-//         <h2 className="sectionTitle">Data Science Projects</h2>
-//         <p className="sectionSubtitle">Transforming data into actionable insights</p>
-//         <div className="projectsGrid">
-//           {dataScienceProjects.map((project, i) => (
-//             <ProjectCard key={i} {...project} />
-//           ))}
-//         </div>
-//       </Section>
-
-//       {/* Contact Section */}
-//       <Section id="contact" className="contactSection">
-//         <div className="contactContent">
-//           <h2 className="sectionTitle">Get In Touch</h2>
-//           <p className="sectionSubtitle">Have a project in mind? Let's work together!</p>
-          
-//           <form className="contactForm" onSubmit={handleSubmit}>
-//             <div className="formGroup">
-//               <label htmlFor="name">Name</label>
-//               <input
-//                 type="text"
-//                 id="name"
-//                 name="name"
-//                 value={formData.name}
-//                 onChange={handleChange}
-//                 required
-//                 placeholder="Your name"
-//               />
-//             </div>
-            
-//             <div className="formGroup">
-//               <label htmlFor="email">Email</label>
-//               <input
-//                 type="email"
-//                 id="email"
-//                 name="email"
-//                 value={formData.email}
-//                 onChange={handleChange}
-//                 required
-//                 placeholder="your.email@example.com"
-//               />
-//             </div>
-            
-//             <div className="formGroup">
-//               <label htmlFor="message">Message</label>
-//               <textarea
-//                 id="message"
-//                 name="message"
-//                 value={formData.message}
-//                 onChange={handleChange}
-//                 required
-//                 rows="6"
-//                 placeholder="Tell me about your project..."
-//               />
-//             </div>
-            
-//             <button type="submit" className="btn btnPrimary submitBtn">
-//               Send Message
-//             </button>
-            
-//             {formStatus && (
-//               <p className="formStatus">{formStatus}</p>
-//             )}
-//           </form>
-//         </div>
-//       </Section>
-
-//       {/* Footer */}
-//       <footer className="footer">
-//         <div className="container">
-//           <p>© 2024 Asrith. Built with React & Three.js</p>
-//         </div>
-//       </footer>
-//     </div>
-//   );
-// }
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("intro");
   const [showEducationDetails, setShowEducationDetails] = useState(false);
+  const [showAboutOverlay, setShowAboutOverlay] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [formStatus, setFormStatus] = useState("");
 
@@ -786,14 +498,12 @@ export default function Portfolio() {
   // --- Data (edit these later) ---
   const education = {
     school: "University of Michigan — Ann Arbor",
-    degree: "B.S. Data Science (LSA) + Computer Science Minor",
+    degree: "B.S. Data Science (LSA) + Intended Business Minor",
     gpa: "4.0",
     coursework: [
       "EECS 280/281 (Data Structures & Algorithms)",
-      "STATS 250/415 (Probability & Stats Methods)",
-      "DATASCI 315 (Data Manipulation)",
-      "EECS 445 (ML / Pattern Recognition)",
-      "Linear Algebra + Discrete Math",
+      "STATS 413 (Applied Regression Analysis)",
+      "DATASCI 315 (Deep Learning)",
     ],
     details:
       "Example details page content: Here you can add awards, clubs (MDST, IOE), key coursework highlights, and links to transcripts or syllabi later.",
@@ -954,17 +664,17 @@ export default function Portfolio() {
       <Section id="intro" className="introSection">
         <div className="introContent">
           <h1 className="introTitle">
-            Hi, I'm <span className="highlight">Asrith</span>
+            I'm <span className="highlight">Asrith</span>
           </h1>
-          <p className="introSubtitle">Software Engineer & Data Scientist</p>
-          <p className="introText">
+          <p className="introSubtitle">Data Scientist & Software Engineer</p>
+          {/* <p className="introText">
             I'm a passionate developer with expertise in building scalable web applications and creating
             data-driven solutions. I love turning complex problems into simple, beautiful, and intuitive solutions.
-          </p>
+          </p> */}
 
           <div className="introButtons">
-            <button onClick={() => scrollToSection("experience")} className="btn btnPrimary">
-              View Experience
+            <button onClick={() => setShowAboutOverlay(true)} className="btn btnPrimary">
+              More About Me
             </button>
             <button onClick={() => scrollToSection("contact")} className="btn btnSecondary">
               Get In Touch
@@ -1195,6 +905,48 @@ export default function Portfolio() {
           <p>© 2024 Asrith. Built with React & Three.js</p>
         </div>
       </footer>
+
+      {/* About Overlay Modal */}
+      {showAboutOverlay && (
+        <div className="aboutOverlay" onClick={() => setShowAboutOverlay(false)}>
+          <div className="aboutOverlayContent" onClick={(e) => e.stopPropagation()}>
+            <button 
+              className="aboutOverlayClose" 
+              onClick={() => setShowAboutOverlay(false)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+            
+            <div className="aboutOverlayBody">
+              {/* Photo Section */}
+              <div className="aboutPhotoSection">
+                <div className="aboutPhotoPlaceholder">
+                  <p className="aboutPhotoText">Photo Placeholder</p>
+                  <p className="aboutPhotoSubtext">Add your photo(s) here</p>
+                </div>
+                {/* Future: Add photo collage here */}
+              </div>
+
+              {/* Description Section */}
+              <div className="aboutDescriptionSection">
+                <h2 className="aboutOverlayTitle">More About Me</h2>
+                <div className="aboutDescriptionPlaceholder">
+                  <p className="aboutDescriptionText">
+                    Add your longer description here. This is where you can share more about your background, 
+                    interests, passions, and what drives you. You can write multiple paragraphs and format 
+                    the text however you'd like.
+                  </p>
+                  <p className="aboutDescriptionText">
+                    This section is ready for you to customize with your own content. Talk about your journey, 
+                    your values, what you're passionate about, or anything else you'd like visitors to know about you.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
