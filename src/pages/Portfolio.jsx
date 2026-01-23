@@ -294,18 +294,6 @@ function BlackHole({ activeSection = "intro" }) {
         <meshStandardMaterial color="#000000" roughness={1} metalness={0} />
       </mesh>
 
-      {/* Photon ring / lens glow */}
-      <mesh scale={1.12}>
-        <torusGeometry args={[0.78, 0.055, 24, 120]} />
-        <meshStandardMaterial
-          color="#ffffff"
-          transparent
-          opacity={0.10}
-          emissive={new THREE.Color("#7c3aed")}
-          emissiveIntensity={2.2}
-          depthWrite={false}
-        />
-      </mesh>
 
       {/* Accretion disk (tilted ring with shader) - visible from all angles */}
       <mesh rotation={[Math.PI / 2.2, 0.25, 0.1]} scale={2.25}>
@@ -421,11 +409,6 @@ function ProjectCard({ title, description, tech, link, github }) {
           ))}
         </div>
         <div className="projectLinks">
-          {link && (
-            <a href={link} target="_blank" rel="noopener noreferrer" className="projectLink">
-              Live Demo →
-            </a>
-          )}
           {github && (
             <a href={github} target="_blank" rel="noopener noreferrer" className="projectLink">
               GitHub →
@@ -437,12 +420,36 @@ function ProjectCard({ title, description, tech, link, github }) {
   );
 }
 
+function ExperienceCard({ position, title, description, tech, dates }) {
+  return (
+    <div className="projectCard">
+      <div className="projectCardInner">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+          <h3 className="projectTitle" style={{ margin: 0 }}>{position}</h3>
+          {dates && (
+            <span style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '14px', fontWeight: 500, whiteSpace: 'nowrap', marginLeft: '16px' }}>
+              {dates}
+            </span>
+          )}
+        </div>
+        <p className="projectDescription" style={{ color: 'rgba(255, 255, 255, 0.7)', marginBottom: '12px', fontSize: '15px' }}>{title}</p>
+        <p className="projectDescription">{description}</p>
+        <div className="projectTech">
+          {tech.map((t, i) => (
+            <span key={i} className="techTag">{t}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("intro");
   const [showEducationDetails, setShowEducationDetails] = useState(false);
   const [showAboutOverlay, setShowAboutOverlay] = useState(false);
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({ title: "", name: "", email: "", message: "" });
   const [formStatus, setFormStatus] = useState("");
 
   useEffect(() => {
@@ -480,67 +487,90 @@ export default function Portfolio() {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setFormStatus("Sending...");
-
-    const mailtoLink = `mailto:your-email@example.com?subject=Portfolio Contact from ${formData.name}&body=${encodeURIComponent(
-      formData.message
-    )}%0D%0A%0D%0AFrom: ${formData.email}`;
+    
+    // Create mailto link with all form data
+    const subject = encodeURIComponent(formData.title || `Portfolio Contact from ${formData.name}`);
+    const body = encodeURIComponent(
+      `From: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`
+    );
+    
+    const mailtoLink = `mailto:arsunke@umich.edu?subject=${subject}&body=${body}`;
+    
+    // Open email client
     window.location.href = mailtoLink;
-
-    setFormData({ name: "", email: "", message: "" });
-    setTimeout(() => setFormStatus("Message sent! I'll get back to you soon."), 1000);
+    
+    // Clear form
+    setFormData({ title: "", name: "", email: "", message: "" });
+    setFormStatus("Opening your email client...");
   };
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   // --- Data (edit these later) ---
-  const education = {
-    school: "University of Michigan — Ann Arbor",
-    degree: "B.S. Data Science (LSA) + Intended Business Minor",
-    gpa: "4.0",
-    coursework: [
-      "EECS 280/281 (Data Structures & Algorithms)",
-      "STATS 413 (Applied Regression Analysis)",
-      "DATASCI 315 (Deep Learning)",
-    ],
-    details:
-      "Example details page content: Here you can add awards, clubs (MDST, IOE), key coursework highlights, and links to transcripts or syllabi later.",
-  };
+  const education = [
+    {
+      school: "University of Michigan — Ann Arbor",
+      degree: "B.S. Data Science (LSA) + Intended Business Minor",
+      gpa: "4.0",
+      dateRange: "August 2025 - May 2028",
+      coursework: [
+        "EECS 280/281 (Data Structures & Algorithms)",
+        "STATS 413 (Applied Regression Analysis)",
+        "DATASCI 315 (Deep Learning)",
+      ],
+      details:
+        "Example details page content: Here you can add awards, clubs (MDST, IOE), key coursework highlights, and links to transcripts or syllabi later.",
+    },
+    {
+      school: "University of Illinois at Urbana-Champaign",
+      degree: "B.S. Astronomy + Data Science",
+      gpa: "4.0",
+      dateRange: "Fall 2024 - August 2025",
+      coursework: [
+        "CS 124 (Intro to Computer Science, Java)",
+        "CS 173 (Discrete Structures)",
+        "STAT400 (Stat and Probability I)",
+        "MATH 241 (Multi-Variable Calculus)",
+        "MATH 257 (Computational Linear Algebra)",
+      ],
+      details: "",
+    },
+  ];
 
   const skills = {
-    languages: ["Python", "C++", "JavaScript/TypeScript", "SQL"],
+    languages: ["Python", "C++", "JavaScript/TypeScript", "SQL", "Java"],
     frameworks: ["React", "Node.js", "Express", "Next.js"],
     data: ["Pandas", "NumPy", "scikit-learn", "TensorFlow", "PyTorch"],
     tools: ["Git", "Docker", "Tableau", "Netlify", "Linux"],
   };
 
-  // Experience cards (use same layout as your project cards)
+  // Experience cards
   const experiences = [
     {
-      title: "Business Intelligence Tool",
+      position: "Undergraduate Research Assistant",
+      title: "University of Michigan",
+      dates: "Sep 2025 - Present",
       description:
         "Built sentiment dashboards using Streamlit, turning chatbot logs into actionable insights and surfacing key trends for stakeholders.",
-      tech: ["Python", "Streamlit", "NLP", "Dashboards"],
-      link: "#",
-      github: "#",
+      tech: ["Python", "Ollama", "FAISS", "RAG", "XenoCanto API"],
     },
     {
-      title: "Tech Chair — Iota Omega Epsilon",
+      position: "Technology Chair",
+      title: "Iota Omega Epsilon",
+      dates: "Sep 2025 - Present",
       description:
         "Owned fraternity web infrastructure and deployments; improved UX, maintained content pipelines, and shipped updates reliably.",
-      tech: ["React", "Netlify", "Git", "UI/UX"],
-      link: "#",
-      github: "#",
+      tech: ["Vite", "React", "Netlify", "Git", "UI/UX", "CSS", "JavaScript"],
     },
     {
-      title: "Cyclist Style Classifier (Team Project)",
+      position: "Lead Data Technician Intern",
+      title: "FDI Group",
+      dates: "Dec 2025 - Present",
       description:
         "Clustered bicyclists by riding style to generate personalized training insights and similarity-based recommendations.",
-      tech: ["Python", "Clustering", "Feature Eng", "Evaluation"],
-      link: "#",
-      github: "#",
+      tech: ["SQL"],
     },
   ];
 
@@ -573,28 +603,27 @@ export default function Portfolio() {
 
   const dataScienceProjects = [
     {
-      title: "Stock Price Prediction",
+      title: "Bikes and Bytes",
       description:
-        "Machine learning model to predict stock prices using LSTM neural networks and historical market data.",
-      tech: ["Python", "TensorFlow", "Pandas", "NumPy"],
+        "Led a team to build a low-cost training tool for cyclists using DBSCAN clustering and PCA/UMAP dimensionality reduction. Won 1st place in a university-wide data science competition.",
+      tech: ["Python", "DBSCAN", "PCA", "UMAP"],
       link: "#",
-      github: "#",
+      github: "https://github.com/arsunke/Bikes-and-Bytes", // Add your GitHub link here
     },
     {
-      title: "Customer Segmentation Analysis",
+      title: "Customer Feedback Intelligence Tool",
       description:
-        "Clustering analysis to segment customers based on purchasing behavior using K-means and PCA.",
-      tech: ["Python", "scikit-learn", "Matplotlib", "Seaborn"],
+        "NLP tool that extracts customer pain points from Amazon reviews using BERT sentiment analysis and LLM-based clustering to rank product features.",
+      tech: ["Python", "NLP", "BERT", "VADER", "Gemini API"],
       link: "#",
-      github: "#",
     },
     {
-      title: "Sentiment Analysis Tool",
+      title: "Stock Risk Recommendation Tool",
       description:
-        "NLP model for analyzing sentiment in customer reviews using transformer models and text classification.",
-      tech: ["Python", "Hugging Face", "NLTK", "Streamlit"],
+        "Streamlit app that assesses stock risk levels using Yahoo Finance API data with a custom point system. Led a three-member team from design to implementation.",
+      tech: ["Python", "Streamlit", "Yahoo Finance API"],
       link: "#",
-      github: "#",
+      github: "https://github.com/arsunke/SPARTA-stock-risk-tool", // No GitHub link for this one
     },
   ];
 
@@ -666,16 +695,13 @@ export default function Portfolio() {
           <h1 className="introTitle">
             I'm <span className="highlight">Asrith</span>
           </h1>
-          <p className="introSubtitle">Data Scientist & Software Engineer</p>
+          <p className="introSubtitle">Data Scientist</p>
           {/* <p className="introText">
             I'm a passionate developer with expertise in building scalable web applications and creating
             data-driven solutions. I love turning complex problems into simple, beautiful, and intuitive solutions.
           </p> */}
 
           <div className="introButtons">
-            <button onClick={() => setShowAboutOverlay(true)} className="btn btnPrimary">
-              More About Me
-            </button>
             <button onClick={() => scrollToSection("contact")} className="btn btnSecondary">
               Get In Touch
             </button>
@@ -689,64 +715,59 @@ export default function Portfolio() {
         <p className="sectionSubtitle">Academic foundation and core coursework</p>
 
         <div className="projectsGrid">
-          <div className="projectCard eduCard">
-            <div className="projectCardInner">
-              <div className="eduHeader">
-                <h3 className="projectTitle">{education.school}</h3>
-                <div className="eduMeta">
-                  <span className="eduDegree">{education.degree}</span>
-                  <span className="eduGpa">GPA: {education.gpa}</span>
-                </div>
-              </div>
-
-              <div className="eduCoursework">
-                {education.coursework.map((c, i) => (
-                  <span key={i} className="techTag">
-                    {c}
-                  </span>
-                ))}
-              </div>
-
-              <div className="projectLinks">
-                <button
-                  className="projectLink"
-                  onClick={() => setShowEducationDetails((v) => !v)}
-                  type="button"
-                >
-                  {showEducationDetails ? "Hide Details →" : "View Details →"}
-                </button>
-              </div>
-
-              {showEducationDetails && (
-                <div className="eduDetails">
-                  <p className="projectDescription">{education.details}</p>
-
-                  <div className="eduDetailsBox">
-                    <div className="eduDetailsTitle">Example “Details Page” (placeholder)</div>
-                    <p className="eduDetailsText">
-                      Later you can replace this with a real route/page. For now it demonstrates expanded content:
-                      awards, activities, relevant class projects, and links.
-                    </p>
-                    <div className="eduDetailsLinks">
-                      <a className="projectLink" href="#" onClick={(e) => e.preventDefault()}>
-                        Transcript (placeholder) →
-                      </a>
-                      <a className="projectLink" href="#" onClick={(e) => e.preventDefault()}>
-                        Coursework Notes (placeholder) →
-                      </a>
-                    </div>
+          {education.map((edu, eduIndex) => (
+            <div key={eduIndex} className="projectCard eduCard">
+              <div className="projectCardInner">
+                <div className="eduHeader">
+                  <div className="eduHeaderTop">
+                    <h3 className="projectTitle">{edu.school}</h3>
+                    <span className="eduDateRange">{edu.dateRange}</span>
+                  </div>
+                  <div className="eduMeta">
+                    <span className="eduDegree">{edu.degree}</span>
+                    <span className="eduGpa">GPA: {edu.gpa}</span>
                   </div>
                 </div>
-              )}
+
+                <div className="eduCoursework">
+                  {edu.coursework.map((c, i) => (
+                    <span key={i} className="techTag">
+                      {c}
+                    </span>
+                  ))}
+                </div>
+
+                {showEducationDetails && edu.details && (
+                  <div className="eduDetails">
+                    <p className="projectDescription">{edu.details}</p>
+
+                    <div className="eduDetailsBox">
+                      <div className="eduDetailsTitle">Example "Details Page" (placeholder)</div>
+                      <p className="eduDetailsText">
+                        Later you can replace this with a real route/page. For now it demonstrates expanded content:
+                        awards, activities, relevant class projects, and links.
+                      </p>
+                      <div className="eduDetailsLinks">
+                        <a className="projectLink" href="#" onClick={(e) => e.preventDefault()}>
+                          Transcript (placeholder) →
+                        </a>
+                        <a className="projectLink" href="#" onClick={(e) => e.preventDefault()}>
+                          Coursework Notes (placeholder) →
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </Section>
 
       {/* Technical Skills */}
       <Section id="skills" className="projectsSection">
         <h2 className="sectionTitle">Technical Skills</h2>
-        <p className="sectionSubtitle">Tools I use to ship products and build models</p>
+        <p className="sectionSubtitle">Tools I use to build stuff</p>
 
         <div className="skillsGrid">
           <div className="projectCard">
@@ -798,10 +819,10 @@ export default function Portfolio() {
       {/* Experience (same layout as projects) */}
       <Section id="experience" className="projectsSection">
         <h2 className="sectionTitle">Experience</h2>
-        <p className="sectionSubtitle">What I’ve built and shipped in real environments</p>
+        <p className="sectionSubtitle">What I’ve made</p>
         <div className="projectsGrid">
           {experiences.map((exp, i) => (
-            <ProjectCard key={i} {...exp} />
+            <ExperienceCard key={i} {...exp} />
           ))}
         </div>
       </Section>
@@ -817,14 +838,14 @@ export default function Portfolio() {
             </div>
             <div className="constructionContent">
               <h2 className="constructionTitle">Software Engineering Projects</h2>
-              <p className="constructionSubtitle">Building scalable and efficient web applications</p>
+              {/* <p className="constructionSubtitle">Building scalable and efficient web applications</p> */}
               <p className="constructionMessage">More projects coming soon...</p>
             </div>
           </div>
 
           <div className="blurredContent">
             <h2 className="sectionTitle">Software Engineering Projects</h2>
-            <p className="sectionSubtitle">Building scalable and efficient web applications</p>
+            <p className="sectionSubtitle"></p>
             <div className="projectsGrid">
               {softwareProjects.map((project, i) => (
                 <ProjectCard key={i} {...project} />
@@ -837,7 +858,7 @@ export default function Portfolio() {
       {/* Data Science Projects (same as now) */}
       <Section id="datascience" className="projectsSection">
         <h2 className="sectionTitle">Data Science Projects</h2>
-        <p className="sectionSubtitle">Transforming data into actionable insights</p>
+        <p className="sectionSubtitle">Machine learning or whatever...</p>
         <div className="projectsGrid">
           {dataScienceProjects.map((project, i) => (
             <ProjectCard key={i} {...project} />
@@ -852,6 +873,19 @@ export default function Portfolio() {
           <p className="sectionSubtitle">Have a project in mind? Let's work together!</p>
 
           <form className="contactForm" onSubmit={handleSubmit}>
+            <div className="formGroup">
+              <label htmlFor="title">Title</label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                required
+                placeholder="Subject or title of your message"
+              />
+            </div>
+
             <div className="formGroup">
               <label htmlFor="name">Name</label>
               <input

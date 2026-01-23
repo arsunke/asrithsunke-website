@@ -632,10 +632,36 @@
   padding: 40px;
 }
 
+/* Education section grid - always 2 columns horizontally */
+#education .projectsGrid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 768px) {
+  #education .projectsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .eduHeader {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.eduHeaderTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.eduDateRange {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .eduMeta {
